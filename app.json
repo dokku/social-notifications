@@ -1,4 +1,10 @@
 {
+    "cron": [
+        {
+            "command": "stackoverflow-notifications",
+            "schedule": "*/10 * * * *"
+        }
+    ],
     "scripts": {
         "dokku": {
             "predeploy": "bin/install-litestream"
