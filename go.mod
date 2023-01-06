@@ -1,3 +1,4 @@
+// +heroku goVersion 1.19
 module stackoverflow-notifications
 
 go 1.19
