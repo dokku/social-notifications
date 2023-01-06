@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
 
-curl -sLo /tmp/litestream.deb https://github.com/benbjohnson/litestream/releases/download/v0.3.6/litestream-v0.3.6-linux-amd64.deb
+litestream_version="0.3.9"
+curl -sLo /tmp/litestream.deb "https://github.com/benbjohnson/litestream/releases/download/v${litestream_version}/litestream-v${litestream_version}-linux-amd64.deb"
 dpkg -i /tmp/litestream.deb
