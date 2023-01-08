@@ -27,7 +27,7 @@
         {
             "command": "social-notifications --services twitter",
             "schedule": "30 17 * * *"
-        },
+        }
     ],
     "scripts": {
         "dokku": {
