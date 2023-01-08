@@ -173,6 +173,11 @@ func processMediumArticles(config *Config, db *gorm.DB) error {
 		return fmt.Errorf("error migrating MediumArticle: %w", err)
 	}
 
+	if config.RapidApiKey == "" {
+		log.Warn("No RAPID_API_KEY specified, skipping medium")
+		return nil
+	}
+
 	log.Info("Fetching articles")
 	results, err := getMediumArticles(config)
 	if err != nil {
