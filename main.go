@@ -66,6 +66,7 @@ func main() {
 	}
 
 	processorMap := map[string]processor{
+		"devto":              processDevtoArticles,
 		"github":             processGithubRepositories,
 		"hackernews_comment": processHackernewsComments,
 		"hackernews_story":   processHackernewsStories,

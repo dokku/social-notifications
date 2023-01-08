@@ -15,6 +15,10 @@
         {
             "command": "social-notifications --services github",
             "schedule": "15 */12 * * *"
+        },
+        {
+            "command": "social-notifications --services devto",
+            "schedule": "20 */12 * * *"
         }
     ],
     "scripts": {
