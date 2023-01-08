@@ -105,13 +105,14 @@ func processStackoverflow(config *Config, db *gorm.DB) error {
 		return fmt.Errorf("error migrating Question: %w", err)
 	}
 
+	log.Info("Fetching questions")
 	questions, err := getQuestions(config)
 	if err != nil {
 		return err
 	}
 
-	insertedQuestions := 0
-	notifiedQuestions := 0
+	inserted := 0
+	notified := 0
 	log.WithField("question_count", len(questions)).Info("Processing questions")
 	for _, question := range questions {
 		logFields := log.Fields{
@@ -136,18 +137,18 @@ func processStackoverflow(config *Config, db *gorm.DB) error {
 			continue
 		}
 
-		insertedQuestions += 1
+		inserted += 1
 		if err := sendSlackNotificationForStackoverflow(question, config); err != nil {
 			log.WithError(err).WithFields(logFields).Fatal("error posting question to slack")
 			continue
 		}
 
-		notifiedQuestions += 1
+		notified += 1
 	}
 	log.WithFields(log.Fields{
 		"processed_question_count": len(questions),
-		"inserted_question_count":  insertedQuestions,
-		"notified_question_count":  notifiedQuestions,
+		"inserted_question_count":  inserted,
+		"notified_question_count":  notified,
 	}).Info("Done with stackoverflow")
 
 	return nil
