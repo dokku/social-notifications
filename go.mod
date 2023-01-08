@@ -15,6 +15,7 @@ require (
 
 require (
 	github.com/buger/jsonparser v1.1.1 // indirect
+	github.com/go-resty/resty/v2 v2.7.0 // indirect
 	github.com/golang/protobuf v1.5.2 // indirect
 	github.com/gorilla/websocket v1.4.2 // indirect
 	github.com/grokify/base36 v1.0.5 // indirect

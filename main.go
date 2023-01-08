@@ -60,4 +60,8 @@ func main() {
 	if err := processStackoverflow(config, db); err != nil {
 		log.WithError(err).Fatal("error processing stackoverflow")
 	}
+
+	if err := processHackernewsStories(config, db); err != nil {
+		log.WithError(err).Fatal("error processing hackernews stories")
+	}
 }
