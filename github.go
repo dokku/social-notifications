@@ -224,9 +224,6 @@ func processGithubRepositories(config *Config, db *gorm.DB) error {
 	notified := 0
 	log.WithField("repository_count", len(results)).Info("Processing questions")
 	for _, result := range results {
-		if result.ID == 570886878 {
-			continue
-		}
 		logFields := log.Fields{
 			"repository_id": result.ID,
 			"title":         result.FullName,
