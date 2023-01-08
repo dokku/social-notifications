@@ -104,13 +104,13 @@ func getDevtoArticles(config *Config) ([]DevtoArticleResult, error) {
 
 func sendSlackNotificationForDevtoArticle(result DevtoArticleResult, config *Config) error {
 	logFields := log.Fields{
-		"story_id": result.ID,
-		"title":    result.Title,
+		"article_id": result.ID,
+		"title":      result.Title,
 	}
 
 	attachment := slack.Attachment{
 		Color:      "#36a64f",
-		Fallback:   "New story on Dev.to!",
+		Fallback:   "New article on Dev.to!",
 		AuthorName: result.User.Username,
 		AuthorLink: fmt.Sprintf("https://dev.to/%s", result.User.Username),
 		Title:      result.Title,
