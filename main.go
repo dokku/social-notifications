@@ -1,11 +1,11 @@
 package main
 
 import (
-	"flag"
 	"strings"
 
 	"github.com/kelseyhightower/envconfig"
 	log "github.com/sirupsen/logrus"
+	flag "github.com/spf13/pflag"
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"
@@ -50,11 +50,16 @@ type processor func(*Config, *gorm.DB) error
 
 func main() {
 	services := flag.String("services", "", "comma-separated list of services to process")
+	notifySlack := flag.Bool("notify-slack", true, "whether to notify slack or not")
 	flag.Parse()
 
 	config := LoadConfig()
 	if config.LogFormat == "json" {
 		log.SetFormatter(&log.JSONFormatter{})
+	}
+
+	if !*notifySlack {
+		config.NotifySlack = false
 	}
 
 	if config.Tag == "" {

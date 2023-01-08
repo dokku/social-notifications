@@ -10,6 +10,7 @@ require (
 	github.com/kelseyhightower/envconfig v1.4.0
 	github.com/sirupsen/logrus v1.9.0
 	github.com/slack-go/slack v0.12.1
+	github.com/spf13/pflag v1.0.5
 	gorm.io/driver/sqlite v1.4.4
 	gorm.io/gorm v1.24.3
 )
