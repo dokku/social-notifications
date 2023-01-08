@@ -9,13 +9,14 @@ import (
 )
 
 type Config struct {
-	DatabaseFile   string `required:"false" split_words:"true"`
-	LogFormat      string `required:"false" split_words:"true"`
-	NotifySlack    bool   `required:"false" split_words:"true"`
-	Site           string `required:"false" split_words:"true"`
-	SlackChannelID string `required:"true" split_words:"true"`
-	SlackToken     string `required:"true" split_words:"true"`
-	Tag            string `required:"true" split_words:"true"`
+	DatabaseFile   string   `required:"false" split_words:"true"`
+	LogFormat      string   `required:"false" split_words:"true"`
+	NotifySlack    bool     `required:"false" split_words:"true"`
+	Services       []string `required:"false" split_words:"true"`
+	Site           string   `required:"false" split_words:"true"`
+	SlackChannelID string   `required:"true" split_words:"true"`
+	SlackToken     string   `required:"true" split_words:"true"`
+	Tag            string   `required:"true" split_words:"true"`
 }
 
 func LoadConfig() *Config {
@@ -42,6 +43,8 @@ func CreateDB(databaseFile string) (*gorm.DB, error) {
 	return db, nil
 }
 
+type processor func(*Config, *gorm.DB) error
+
 func main() {
 	config := LoadConfig()
 	if config.LogFormat == "json" {
@@ -57,11 +60,35 @@ func main() {
 		log.WithError(err).Fatal("error creating db")
 	}
 
-	if err := processStackoverflow(config, db); err != nil {
-		log.WithError(err).Fatal("error processing stackoverflow")
+	services := map[string]processor{
+		"stackoverflow":    processStackoverflow,
+		"hackernews_story": processHackernewsStories,
 	}
 
-	if err := processHackernewsStories(config, db); err != nil {
-		log.WithError(err).Fatal("error processing hackernews stories")
+	// allow disabling services
+	if len(config.Services) > 0 {
+		enabledServices := map[string]bool{}
+		for _, service := range config.Services {
+			enabledServices[service] = true
+		}
+
+		disabledServices := []string{}
+		for service := range services {
+			if !enabledServices[service] {
+				disabledServices = append(disabledServices, service)
+			}
+		}
+
+		for _, service := range disabledServices {
+			log.WithField("service", service).Info("Disabling service")
+			delete(services, service)
+		}
+	}
+
+	for service, processor := range services {
+		log.WithField("service", service).Info("Processing service")
+		if err := processor(config, db); err != nil {
+			log.WithError(err).WithField("service", service).Fatal("error processing")
+		}
 	}
 }
