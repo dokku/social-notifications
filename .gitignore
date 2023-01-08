@@ -2,4 +2,4 @@
 .env
 .env.production
 *.db
-stackoverflow-notifications
+social-notifications

@@ -1,5 +1,5 @@
 // +heroku goVersion 1.19
-module stackoverflow-notifications
+module social-notifications
 
 go 1.19
 

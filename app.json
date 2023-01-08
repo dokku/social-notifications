@@ -1,7 +1,7 @@
 {
     "cron": [
         {
-            "command": "stackoverflow-notifications",
+            "command": "social-notifications",
             "schedule": "0 */12 * * *"
         }
     ],

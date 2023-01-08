@@ -29,11 +29,12 @@ type Config struct {
 	NotifySlack     bool   `required:"false"`
 	Site            string `required:"false"`
 	SlackChannel    string `required:"true" split_words:"true"`
-	SlackIconURL    string `required:"true" split_words:"true"`
 	SlackUsername   string `required:"true" split_words:"true"`
 	SlackWebhookURL string `required:"true" split_words:"true"`
 	Tag             string `required:"true"`
 }
+
+var stackoverflowIconURL = "https://emoji.slack-edge.com/T085AJH3L/stackoverflow/35cab7f857fa4681.png"
 
 func LoadConfig() *Config {
 	var config Config
@@ -129,7 +130,7 @@ func main() {
 			Title:      question.Title,
 			TitleLink:  question.Link,
 			Footer:     "Stackoverflow Notification",
-			FooterIcon: config.SlackIconURL,
+			FooterIcon: stackoverflowIconURL,
 			Ts:         json.Number(strconv.FormatInt(int64(question.CreationDate), 10)),
 			Fields: []slack.AttachmentField{
 				{
@@ -156,7 +157,7 @@ func main() {
 		}
 		msg := slack.WebhookMessage{
 			Channel:     config.SlackChannel,
-			IconURL:     config.SlackIconURL,
+			IconURL:     stackoverflowIconURL,
 			Username:    config.SlackUsername,
 			Text:        "New question on <" + question.Link + "|StackOverflow>",
 			Attachments: []slack.Attachment{attachment},

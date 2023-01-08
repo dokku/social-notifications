@@ -1,6 +1,6 @@
-# stackoverflow-notifications
+# social-notifications
 
-Sends notifications to slack whenever a new question with the `dokku` tag is posted.
+A simple project that listens to specific words across the web and sends notifications about them to slack.
 
 ## Config
 
