@@ -1,6 +1,9 @@
 package main
 
 import (
+	"flag"
+	"strings"
+
 	"github.com/kelseyhightower/envconfig"
 	log "github.com/sirupsen/logrus"
 	"gorm.io/driver/sqlite"
@@ -9,14 +12,13 @@ import (
 )
 
 type Config struct {
-	DatabaseFile   string   `required:"false" split_words:"true"`
-	LogFormat      string   `required:"false" split_words:"true"`
-	NotifySlack    bool     `required:"false" split_words:"true"`
-	Services       []string `required:"false" split_words:"true"`
-	Site           string   `required:"false" split_words:"true"`
-	SlackChannelID string   `required:"true" split_words:"true"`
-	SlackToken     string   `required:"true" split_words:"true"`
-	Tag            string   `required:"true" split_words:"true"`
+	DatabaseFile   string `required:"false" split_words:"true"`
+	LogFormat      string `required:"false" split_words:"true"`
+	NotifySlack    bool   `required:"false" split_words:"true"`
+	Site           string `required:"false" split_words:"true"`
+	SlackChannelID string `required:"true" split_words:"true"`
+	SlackToken     string `required:"true" split_words:"true"`
+	Tag            string `required:"true" split_words:"true"`
 }
 
 func LoadConfig() *Config {
@@ -46,6 +48,9 @@ func CreateDB(databaseFile string) (*gorm.DB, error) {
 type processor func(*Config, *gorm.DB) error
 
 func main() {
+	services := flag.String("services", "", "comma-separated list of services to process")
+	flag.Parse()
+
 	config := LoadConfig()
 	if config.LogFormat == "json" {
 		log.SetFormatter(&log.JSONFormatter{})
@@ -60,21 +65,21 @@ func main() {
 		log.WithError(err).Fatal("error creating db")
 	}
 
-	services := map[string]processor{
+	processorMap := map[string]processor{
 		"stackoverflow":      processStackoverflow,
 		"hackernews_comment": processHackernewsComments,
 		"hackernews_story":   processHackernewsStories,
 	}
 
 	// allow disabling services
-	if len(config.Services) > 0 {
+	if len(*services) > 0 {
 		enabledServices := map[string]bool{}
-		for _, service := range config.Services {
+		for _, service := range strings.Split(*services, ",") {
 			enabledServices[service] = true
 		}
 
 		disabledServices := []string{}
-		for service := range services {
+		for service := range processorMap {
 			if !enabledServices[service] {
 				disabledServices = append(disabledServices, service)
 			}
@@ -82,11 +87,11 @@ func main() {
 
 		for _, service := range disabledServices {
 			log.WithField("service", service).Info("Disabling service")
-			delete(services, service)
+			delete(processorMap, service)
 		}
 	}
 
-	for service, processor := range services {
+	for service, processor := range processorMap {
 		log.WithField("service", service).Info("Processing service")
 		if err := processor(config, db); err != nil {
 			log.WithError(err).WithField("service", service).Fatal("error processing")

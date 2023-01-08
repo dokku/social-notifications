@@ -1,8 +1,16 @@
 {
     "cron": [
         {
-            "command": "social-notifications",
-            "schedule": "0 */12 * * *"
+            "command": "social-notifications --services stackoverflow",
+            "schedule": "0 0 * * *"
+        },
+        {
+            "command": "social-notifications --services hackernews_comment",
+            "schedule": "20 */2 * * *"
+        },
+        {
+            "command": "social-notifications --services hackernews_story",
+            "schedule": "10 */4 * * *"
         }
     ],
     "scripts": {
