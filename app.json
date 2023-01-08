@@ -22,7 +22,7 @@
         },
         {
             "command": "social-notifications --services medium",
-            "schedule": "25 17 10 * *"
+            "schedule": "25 17 * * 1"
         }
     ],
     "scripts": {
