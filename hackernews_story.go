@@ -6,7 +6,6 @@ import (
 	"fmt"
 	"strconv"
 	"strings"
-	"time"
 
 	"github.com/go-resty/resty/v2"
 	log "github.com/sirupsen/logrus"
@@ -20,99 +19,11 @@ type HackerNewsStory struct {
 	Title    string `gorm:"not null" form:"title" json:"title"`
 }
 
-type HackerNewsResponse struct {
-	Hits             []HackerNewsResult `json:"hits"`
-	NbHits           int                `json:"nbHits"`
-	Page             int                `json:"page"`
-	NbPages          int                `json:"nbPages"`
-	HitsPerPage      int                `json:"hitsPerPage"`
-	ExhaustiveNbHits bool               `json:"exhaustiveNbHits"`
-	ExhaustiveTypo   bool               `json:"exhaustiveTypo"`
-	Exhaustive       struct {
-		NbHits bool `json:"nbHits"`
-		Typo   bool `json:"typo"`
-	} `json:"exhaustive"`
-	Query               string `json:"query"`
-	Params              string `json:"params"`
-	ProcessingTimeMS    int    `json:"processingTimeMS"`
-	ProcessingTimingsMS struct {
-		AfterFetch struct {
-			Format struct {
-				Highlighting int `json:"highlighting"`
-				Total        int `json:"total"`
-			} `json:"format"`
-			Total int `json:"total"`
-		} `json:"afterFetch"`
-		Fetch struct {
-			Scanning int `json:"scanning"`
-			Total    int `json:"total"`
-		} `json:"fetch"`
-		Request struct {
-			RoundTrip int `json:"roundTrip"`
-		} `json:"request"`
-		Total int `json:"total"`
-	} `json:"processingTimingsMS"`
-	ServerTimeMS int `json:"serverTimeMS"`
-}
-
-type HackerNewsResult struct {
-	CreatedAt       time.Time `json:"created_at"`
-	Title           string    `json:"title"`
-	URL             string    `json:"url"`
-	Author          string    `json:"author"`
-	Points          int       `json:"points"`
-	StoryText       string    `json:"story_text"`
-	CommentText     string    `json:"comment_text"`
-	NumComments     int       `json:"num_comments"`
-	StoryID         int       `json:"story_id"`
-	StoryTitle      string    `json:"story_title"`
-	StoryURL        string    `json:"story_url"`
-	ParentID        int       `json:"parent_id"`
-	CreatedAtI      int       `json:"created_at_i"`
-	RelevancyScore  int       `json:"relevancy_score"`
-	Tags            []string  `json:"_tags"`
-	ObjectID        string    `json:"objectID"`
-	HighlightResult struct {
-		Author struct {
-			Value        string   `json:"value"`
-			MatchLevel   string   `json:"matchLevel"`
-			MatchedWords []string `json:"matchedWords"`
-		} `json:"author"`
-		CommentText struct {
-			Value            string   `json:"value"`
-			MatchLevel       string   `json:"matchLevel"`
-			FullyHighlighted bool     `json:"fullyHighlighted"`
-			MatchedWords     []string `json:"matchedWords"`
-		} `json:"comment_text"`
-		StoryTitle struct {
-			Value        string   `json:"value"`
-			MatchLevel   string   `json:"matchLevel"`
-			MatchedWords []string `json:"matchedWords"`
-		} `json:"story_title"`
-		StoryURL struct {
-			Value        string   `json:"value"`
-			MatchLevel   string   `json:"matchLevel"`
-			MatchedWords []string `json:"matchedWords"`
-		} `json:"story_url"`
-		Title struct {
-			Value        string   `json:"value"`
-			MatchLevel   string   `json:"matchLevel"`
-			MatchedWords []string `json:"matchedWords"`
-		} `json:"title"`
-		URL struct {
-			Value        string   `json:"value"`
-			MatchLevel   string   `json:"matchLevel"`
-			MatchedWords []string `json:"matchedWords"`
-		} `json:"url"`
-	} `json:"_highlightResult"`
-}
-
-var hackernewsIconUrl = "https://emoji.slack-edge.com/T085AJH3L/hacker-news/0daae30bfa8eefc6.png"
-
 func getHackernewsStories(config *Config) ([]HackerNewsResult, error) {
 	var stories []HackerNewsResult
 	page := 0
 	for {
+		log.WithField("page", page).Info("Fetching page")
 		var results HackerNewsResponse
 		client := resty.New()
 		_, err := client.R().
@@ -223,39 +134,38 @@ func processHackernewsStories(config *Config, db *gorm.DB) error {
 	}
 
 	log.Info("Fetching stories")
-	stories, err := getHackernewsStories(config)
+	results, err := getHackernewsStories(config)
 	if err != nil {
 		return err
 	}
 
 	inserted := 0
 	notified := 0
-	log.WithField("story_count", len(stories)).Info("Processing questions")
-	for _, story := range stories {
+	log.WithField("story_count", len(results)).Info("Processing questions")
+	for _, result := range results {
 		logFields := log.Fields{
-			"story_object_id": story.ObjectID,
-			"title":           story.Title,
+			"story_object_id": result.ObjectID,
+			"title":           result.Title,
 		}
 
 		var entity HackerNewsStory
-		result := db.First(&entity, "object_id = ?", story.ObjectID)
-		if !errors.Is(result.Error, gorm.ErrRecordNotFound) {
+		if dbResult := db.First(&entity, "object_id = ?", result.ObjectID); !errors.Is(dbResult.Error, gorm.ErrRecordNotFound) {
 			continue
 		}
 
 		log.WithFields(logFields).Info("Inserting new story")
 		entity = HackerNewsStory{
-			ObjectID: story.ObjectID,
-			Title:    story.Title,
+			ObjectID: result.ObjectID,
+			Title:    result.Title,
 		}
 
-		if result := db.Create(&entity); result.Error != nil {
-			log.WithError(result.Error).WithFields(logFields).Fatal("error inserting story into database")
+		if dbResult := db.Create(&entity); dbResult.Error != nil {
+			log.WithError(dbResult.Error).WithFields(logFields).Fatal("error inserting story into database")
 			continue
 		}
 
 		inserted += 1
-		if err := sendSlackNotificationForHackernewsStory(story, config); err != nil {
+		if err := sendSlackNotificationForHackernewsStory(result, config); err != nil {
 			log.WithError(err).WithFields(logFields).Fatal("error posting story to slack")
 			continue
 		}
@@ -263,7 +173,7 @@ func processHackernewsStories(config *Config, db *gorm.DB) error {
 		notified += 1
 	}
 	log.WithFields(log.Fields{
-		"processed_story_count": len(stories),
+		"processed_story_count": len(results),
 		"inserted_story_count":  inserted,
 		"notified_story_count":  notified,
 	}).Info("Done with hacker news stories")

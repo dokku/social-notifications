@@ -61,8 +61,9 @@ func main() {
 	}
 
 	services := map[string]processor{
-		"stackoverflow":    processStackoverflow,
-		"hackernews_story": processHackernewsStories,
+		"stackoverflow":      processStackoverflow,
+		"hackernews_comment": processHackernewsComments,
+		"hackernews_story":   processHackernewsStories,
 	}
 
 	// allow disabling services

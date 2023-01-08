@@ -5,6 +5,7 @@ go 1.19
 
 require (
 	github.com/antihax/optional v1.0.0
+	github.com/go-resty/resty/v2 v2.7.0
 	github.com/grokify/go-stackoverflow v0.1.5
 	github.com/kelseyhightower/envconfig v1.4.0
 	github.com/sirupsen/logrus v1.9.0
@@ -15,7 +16,6 @@ require (
 
 require (
 	github.com/buger/jsonparser v1.1.1 // indirect
-	github.com/go-resty/resty/v2 v2.7.0 // indirect
 	github.com/golang/protobuf v1.5.2 // indirect
 	github.com/gorilla/websocket v1.4.2 // indirect
 	github.com/grokify/base36 v1.0.5 // indirect
