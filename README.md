@@ -12,3 +12,10 @@ A simple project that listens to specific words across the web and sends notific
 - SLACK_CHANNEL_ID
 - SLACK_TOKEN
 - TAG
+
+# Services
+
+- Dev.to: by tag
+- Github: in repository name
+- Hacker News comments and stories: in contents, titles, and urls
+- Stackoverflow: by tag
