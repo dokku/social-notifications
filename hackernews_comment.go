@@ -73,7 +73,7 @@ func getHackernewsComments(config *Config) ([]HackerNewsResult, error) {
 
 func sendSlackNotificationForHackernewsComment(result HackerNewsResult, config *Config) error {
 	logFields := log.Fields{
-		"question_id": result.ObjectID,
+		"comment_id": result.ObjectID,
 	}
 
 	link := fmt.Sprintf("https://news.ycombinator.com/item?id=%s", result.ObjectID)
@@ -138,7 +138,7 @@ func processHackernewsComments(config *Config, db *gorm.DB) error {
 
 	inserted := 0
 	notified := 0
-	log.WithField("comment_count", len(results)).Info("Processing questions")
+	log.WithField("comment_count", len(results)).Info("Processing comments")
 	for _, result := range results {
 		logFields := log.Fields{
 			"comment_object_id": result.ObjectID,

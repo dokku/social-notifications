@@ -64,8 +64,8 @@ func getHackernewsStories(config *Config) ([]HackerNewsResult, error) {
 
 func sendSlackNotificationForHackernewsStory(result HackerNewsResult, config *Config) error {
 	logFields := log.Fields{
-		"question_id": result.ObjectID,
-		"title":       result.Title,
+		"story_id": result.ObjectID,
+		"title":    result.Title,
 	}
 
 	link := fmt.Sprintf("https://news.ycombinator.com/item?id=%s", result.ObjectID)
@@ -141,7 +141,7 @@ func processHackernewsStories(config *Config, db *gorm.DB) error {
 
 	inserted := 0
 	notified := 0
-	log.WithField("story_count", len(results)).Info("Processing questions")
+	log.WithField("story_count", len(results)).Info("Processing stories")
 	for _, result := range results {
 		logFields := log.Fields{
 			"story_object_id": result.ObjectID,
