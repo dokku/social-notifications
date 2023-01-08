@@ -146,7 +146,6 @@ func getHackernewsStories(config *Config) ([]HackerNewsResult, error) {
 
 			stories = append(stories, story)
 		}
-		break
 	}
 
 	return stories, nil
