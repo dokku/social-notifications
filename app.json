@@ -11,6 +11,10 @@
         {
             "command": "social-notifications --services hackernews_story",
             "schedule": "10 */4 * * *"
+        },
+        {
+            "command": "social-notifications --services github",
+            "schedule": "15 */12 * * *"
         }
     ],
     "scripts": {
