@@ -82,17 +82,21 @@ func sendSlackNotificationForStackoverflow(question stackoverflow.Question, conf
 			},
 		},
 	}
-	msg := slack.WebhookMessage{
-		Channel:     config.SlackChannel,
-		IconURL:     stackoverflowIconURL,
-		Username:    config.SlackUsername,
-		Text:        "New question on <" + question.Link + "|StackOverflow>",
-		Attachments: []slack.Attachment{attachment},
-	}
 
 	if config.NotifySlack {
 		log.WithFields(logFields).Info("Notifying slack")
-		if err := slack.PostWebhook(config.SlackWebhookURL, &msg); err != nil {
+		messageOpts := []slack.MsgOption{
+			slack.MsgOptionAsUser(false),
+			slack.MsgOptionAttachments(attachment),
+			slack.MsgOptionIconEmoji(":stackoverflow:"),
+			slack.MsgOptionText("New question on <"+question.Link+"|StackOverflow>", false),
+			slack.MsgOptionUsername("Stackoverflow Notification"),
+			slack.MsgOptionDisableLinkUnfurl(),
+		}
+
+		api := slack.New(config.SlackToken)
+		if _, _, err := api.PostMessage(config.SlackChannelID, messageOpts...); err != nil {
+			println(err.Error())
 			return err
 		}
 	}

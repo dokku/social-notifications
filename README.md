@@ -9,8 +9,6 @@ A simple project that listens to specific words across the web and sends notific
 - LITESTREAM_REPLICA_URL
 - LITESTREAM_SECRET_ACCESS_KEY
 - LOG_FORMAT
-- SLACK_CHANNEL
-- SLACK_ICON_URL
-- SLACK_USERNAME
-- SLACK_WEBHOOK_URL
+- SLACK_CHANNEL_ID
+- SLACK_TOKEN
 - TAG

@@ -9,14 +9,13 @@ import (
 )
 
 type Config struct {
-	DatabaseFile    string `required:"false" split_words:"true"`
-	LogFormat       string `required:"false" split_words:"true"`
-	NotifySlack     bool   `required:"false" split_words:"true"`
-	Site            string `required:"false" split_words:"true"`
-	SlackChannel    string `required:"true" split_words:"true"`
-	SlackUsername   string `required:"true" split_words:"true"`
-	SlackWebhookURL string `required:"true" split_words:"true"`
-	Tag             string `required:"true" split_words:"true"`
+	DatabaseFile   string `required:"false" split_words:"true"`
+	LogFormat      string `required:"false" split_words:"true"`
+	NotifySlack    bool   `required:"false" split_words:"true"`
+	Site           string `required:"false" split_words:"true"`
+	SlackChannelID string `required:"true" split_words:"true"`
+	SlackToken     string `required:"true" split_words:"true"`
+	Tag            string `required:"true" split_words:"true"`
 }
 
 func LoadConfig() *Config {
