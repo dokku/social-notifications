@@ -2,7 +2,7 @@
     "cron": [
         {
             "command": "social-notifications --services stackoverflow",
-            "schedule": "0 0 * * *"
+            "schedule": "0 17 * * *"
         },
         {
             "command": "social-notifications --services hackernews_comment",
@@ -14,11 +14,11 @@
         },
         {
             "command": "social-notifications --services github",
-            "schedule": "15 */12 * * *"
+            "schedule": "15 17 * * *"
         },
         {
             "command": "social-notifications --services devto",
-            "schedule": "20 */12 * * *"
+            "schedule": "20 17 * * *"
         }
     ],
     "scripts": {
