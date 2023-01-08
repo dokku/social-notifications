@@ -222,7 +222,7 @@ func processGithubRepositories(config *Config, db *gorm.DB) error {
 
 	inserted := 0
 	notified := 0
-	log.WithField("repository_count", len(results)).Info("Processing questions")
+	log.WithField("repository_count", len(results)).Info("Processing repositories")
 	for _, result := range results {
 		logFields := log.Fields{
 			"repository_id": result.ID,
