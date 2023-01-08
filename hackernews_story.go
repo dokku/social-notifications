@@ -20,11 +20,11 @@ type HackerNewsStory struct {
 }
 
 func getHackernewsStories(config *Config) ([]HackerNewsResult, error) {
-	var stories []HackerNewsResult
+	var results []HackerNewsResult
 	page := 0
 	for {
 		log.WithField("page", page).Info("Fetching page")
-		var results HackerNewsResponse
+		var response HackerNewsResponse
 		client := resty.New()
 		_, err := client.R().
 			SetQueryParams(map[string]string{
@@ -32,52 +32,52 @@ func getHackernewsStories(config *Config) ([]HackerNewsResult, error) {
 				"tags":  "story",
 				"page":  strconv.FormatInt(int64(page), 10),
 			}).
-			SetResult(&results).
+			SetResult(&response).
 			Get("http://hn.algolia.com/api/v1/search_by_date")
 		if err != nil {
-			return stories, err
+			return results, err
 		}
 
 		page += 1
-		if len(results.Hits) == 0 {
+		if len(response.Hits) == 0 {
 			break
 		}
 
-		for _, story := range results.Hits {
-			if len(story.HighlightResult.URL.MatchedWords) > 0 {
-				if !strings.Contains(strings.ToLower(story.HighlightResult.URL.Value), config.Tag) {
+		for _, result := range response.Hits {
+			if len(result.HighlightResult.URL.MatchedWords) > 0 {
+				if !strings.Contains(strings.ToLower(result.HighlightResult.URL.Value), config.Tag) {
 					continue
 				}
 			}
-			if len(story.HighlightResult.Author.MatchedWords) > 0 {
-				if !strings.Contains(strings.ToLower(story.HighlightResult.Author.Value), config.Tag) {
+			if len(result.HighlightResult.Author.MatchedWords) > 0 {
+				if !strings.Contains(strings.ToLower(result.HighlightResult.Author.Value), config.Tag) {
 					continue
 				}
 			}
 
-			stories = append(stories, story)
+			results = append(results, result)
 		}
 	}
 
-	return stories, nil
+	return results, nil
 }
 
-func sendSlackNotificationForHackernewsStory(story HackerNewsResult, config *Config) error {
+func sendSlackNotificationForHackernewsStory(result HackerNewsResult, config *Config) error {
 	logFields := log.Fields{
-		"question_id": story.ObjectID,
-		"title":       story.Title,
+		"question_id": result.ObjectID,
+		"title":       result.Title,
 	}
 
-	link := fmt.Sprintf("https://news.ycombinator.com/item?id=%s", story.ObjectID)
+	link := fmt.Sprintf("https://news.ycombinator.com/item?id=%s", result.ObjectID)
 	fields := []slack.AttachmentField{
 		{
 			Title: "# Points",
-			Value: strconv.FormatInt(int64(story.Points), 10),
+			Value: strconv.FormatInt(int64(result.Points), 10),
 			Short: true,
 		},
 		{
 			Title: "# Comments",
-			Value: strconv.FormatInt(int64(story.NumComments), 10),
+			Value: strconv.FormatInt(int64(result.NumComments), 10),
 			Short: true,
 		},
 		{
@@ -87,10 +87,10 @@ func sendSlackNotificationForHackernewsStory(story HackerNewsResult, config *Con
 		},
 	}
 
-	if len(story.HighlightResult.URL.Value) > 0 {
+	if len(result.HighlightResult.URL.Value) > 0 {
 		fields = append(fields, slack.AttachmentField{
 			Title: "Original Link",
-			Value: story.HighlightResult.URL.Value,
+			Value: result.HighlightResult.URL.Value,
 			Short: true,
 		})
 	}
@@ -98,13 +98,13 @@ func sendSlackNotificationForHackernewsStory(story HackerNewsResult, config *Con
 	attachment := slack.Attachment{
 		Color:      "#36a64f",
 		Fallback:   "New story on Hacker News!",
-		AuthorName: story.Author,
-		AuthorLink: fmt.Sprintf("https://news.ycombinator.com/user?id=%s", story.Author),
-		Title:      story.Title,
+		AuthorName: result.Author,
+		AuthorLink: fmt.Sprintf("https://news.ycombinator.com/user?id=%s", result.Author),
+		Title:      result.Title,
 		TitleLink:  link,
 		Footer:     "Hacker News Story Notification",
 		FooterIcon: hackernewsIconUrl,
-		Ts:         json.Number(strconv.FormatInt(int64(story.CreatedAt.Unix()), 10)),
+		Ts:         json.Number(strconv.FormatInt(int64(result.CreatedAt.Unix()), 10)),
 		Fields:     fields,
 	}
 

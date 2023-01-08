@@ -19,11 +19,11 @@ type HackerNewsComment struct {
 }
 
 func getHackernewsComments(config *Config) ([]HackerNewsResult, error) {
-	var stories []HackerNewsResult
+	var results []HackerNewsResult
 	page := 0
 	for {
 		log.WithField("page", page).Info("Fetching page")
-		var results HackerNewsResponse
+		var response HackerNewsResponse
 		client := resty.New()
 		_, err := client.R().
 			SetQueryParams(map[string]string{
@@ -31,52 +31,52 @@ func getHackernewsComments(config *Config) ([]HackerNewsResult, error) {
 				"tags":  "comment",
 				"page":  strconv.FormatInt(int64(page), 10),
 			}).
-			SetResult(&results).
+			SetResult(&response).
 			Get("http://hn.algolia.com/api/v1/search_by_date")
 		if err != nil {
-			return stories, err
+			return results, err
 		}
 
 		page += 1
-		if len(results.Hits) == 0 {
+		if len(response.Hits) == 0 {
 			break
 		}
 
-		for _, comment := range results.Hits {
-			if len(comment.HighlightResult.Author.MatchedWords) > 0 {
-				if !strings.Contains(strings.ToLower(comment.HighlightResult.Author.Value), config.Tag) {
+		for _, result := range response.Hits {
+			if len(result.HighlightResult.Author.MatchedWords) > 0 {
+				if !strings.Contains(strings.ToLower(result.HighlightResult.Author.Value), config.Tag) {
 					continue
 				}
 			}
-			if len(comment.HighlightResult.CommentText.MatchedWords) > 0 {
-				if !strings.Contains(strings.ToLower(comment.HighlightResult.CommentText.Value), config.Tag) {
+			if len(result.HighlightResult.CommentText.MatchedWords) > 0 {
+				if !strings.Contains(strings.ToLower(result.HighlightResult.CommentText.Value), config.Tag) {
 					continue
 				}
 			}
-			if len(comment.HighlightResult.StoryTitle.MatchedWords) > 0 {
-				if !strings.Contains(strings.ToLower(comment.HighlightResult.StoryTitle.Value), config.Tag) {
+			if len(result.HighlightResult.StoryTitle.MatchedWords) > 0 {
+				if !strings.Contains(strings.ToLower(result.HighlightResult.StoryTitle.Value), config.Tag) {
 					continue
 				}
 			}
-			if len(comment.HighlightResult.StoryURL.MatchedWords) > 0 {
-				if !strings.Contains(strings.ToLower(comment.HighlightResult.StoryURL.Value), config.Tag) {
+			if len(result.HighlightResult.StoryURL.MatchedWords) > 0 {
+				if !strings.Contains(strings.ToLower(result.HighlightResult.StoryURL.Value), config.Tag) {
 					continue
 				}
 			}
 
-			stories = append(stories, comment)
+			results = append(results, result)
 		}
 	}
 
-	return stories, nil
+	return results, nil
 }
 
-func sendSlackNotificationForHackernewsComment(comment HackerNewsResult, config *Config) error {
+func sendSlackNotificationForHackernewsComment(result HackerNewsResult, config *Config) error {
 	logFields := log.Fields{
-		"question_id": comment.ObjectID,
+		"question_id": result.ObjectID,
 	}
 
-	link := fmt.Sprintf("https://news.ycombinator.com/item?id=%s", comment.ObjectID)
+	link := fmt.Sprintf("https://news.ycombinator.com/item?id=%s", result.ObjectID)
 	fields := []slack.AttachmentField{
 		{
 			Title: "Type",
@@ -85,10 +85,10 @@ func sendSlackNotificationForHackernewsComment(comment HackerNewsResult, config 
 		},
 	}
 
-	if len(comment.HighlightResult.URL.Value) > 0 {
+	if len(result.HighlightResult.URL.Value) > 0 {
 		fields = append(fields, slack.AttachmentField{
 			Title: "Original Link",
-			Value: comment.HighlightResult.URL.Value,
+			Value: result.HighlightResult.URL.Value,
 			Short: true,
 		})
 	}
@@ -96,12 +96,12 @@ func sendSlackNotificationForHackernewsComment(comment HackerNewsResult, config 
 	attachment := slack.Attachment{
 		Color:      "#36a64f",
 		Fallback:   "New comment on Hacker News!",
-		AuthorName: comment.Author,
-		AuthorLink: fmt.Sprintf("https://news.ycombinator.com/user?id=%s", comment.Author),
+		AuthorName: result.Author,
+		AuthorLink: fmt.Sprintf("https://news.ycombinator.com/user?id=%s", result.Author),
 		TitleLink:  link,
 		Footer:     "Hacker News Comment Notification",
 		FooterIcon: hackernewsIconUrl,
-		Ts:         json.Number(strconv.FormatInt(int64(comment.CreatedAt.Unix()), 10)),
+		Ts:         json.Number(strconv.FormatInt(int64(result.CreatedAt.Unix()), 10)),
 		Fields:     fields,
 	}
 
@@ -171,7 +171,7 @@ func processHackernewsComments(config *Config, db *gorm.DB) error {
 		"processed_comment_count": len(results),
 		"inserted_comment_count":  inserted,
 		"notified_comment_count":  notified,
-	}).Info("Done with hacker news stories")
+	}).Info("Done with hacker news comments")
 
 	return nil
 }
