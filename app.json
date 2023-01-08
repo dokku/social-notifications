@@ -2,7 +2,7 @@
     "cron": [
         {
             "command": "stackoverflow-notifications",
-            "schedule": "*/10 * * * *"
+            "schedule": "0 */12 * * *"
         }
     ],
     "scripts": {
