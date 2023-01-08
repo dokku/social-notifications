@@ -50,7 +50,7 @@ func getTweets(config *Config) ([]*twitter.TweetDictionary, error) {
 			twitter.ExpansionAuthorID,
 			twitter.ExpansionReferencedTweetsID,
 		},
-		StartTime: time.Now().AddDate(0, 0, -7),
+		StartTime: time.Now().AddDate(0, 0, -1),
 		TweetFields: []twitter.TweetField{
 			twitter.TweetFieldCreatedAt,
 			twitter.TweetFieldConversationID,
