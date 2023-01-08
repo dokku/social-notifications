@@ -23,7 +23,11 @@
         {
             "command": "social-notifications --services medium",
             "schedule": "25 17 * * 1"
-        }
+        },
+        {
+            "command": "social-notifications --services twitter",
+            "schedule": "30 17 * * *"
+        },
     ],
     "scripts": {
         "dokku": {

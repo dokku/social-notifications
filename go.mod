@@ -5,6 +5,7 @@ go 1.19
 
 require (
 	github.com/antihax/optional v1.0.0
+	github.com/g8rswimmer/go-twitter v1.1.4
 	github.com/go-resty/resty/v2 v2.7.0
 	github.com/grokify/go-stackoverflow v0.1.5
 	github.com/kelseyhightower/envconfig v1.4.0

@@ -59,3 +59,9 @@ Shows articles where the content has the tag.
 Shows questions where the question has the tag.
 
 ![stackoverflow preview](/images/stackoverflow.png)
+
+## Twitter
+
+Shows results where the tweet content has the tag. Has certain filtering conditions (see code for details).
+
+![twitter preview](/images/twitter.png)
