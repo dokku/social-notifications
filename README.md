@@ -18,4 +18,5 @@ A simple project that listens to specific words across the web and sends notific
 - Dev.to: by tag
 - Github: in repository name
 - Hacker News comments and stories: in contents, titles, and urls
+- Medium: by tag
 - Stackoverflow: by tag

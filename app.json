@@ -19,6 +19,10 @@
         {
             "command": "social-notifications --services devto",
             "schedule": "20 17 * * *"
+        },
+        {
+            "command": "social-notifications --services medium",
+            "schedule": "25 17 10 * *"
         }
     ],
     "scripts": {
