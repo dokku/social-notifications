@@ -19,7 +19,7 @@ type DevtoArticle struct {
 	Title     string `gorm:"not null" form:"title" json:"title"`
 }
 
-type DevotResponse []DevtoArticleResult
+type DevtoResponse []DevtoArticleResult
 
 type DevtoArticleResult struct {
 	TypeOf                 string     `json:"type_of"`
@@ -77,7 +77,7 @@ func getDevtoArticles(config *Config) ([]DevtoArticleResult, error) {
 	page := 1
 	for {
 		log.WithField("page", page).Info("Fetching page")
-		var response DevotResponse
+		var response DevtoResponse
 		client := resty.New()
 		_, err := client.R().
 			SetQueryParams(map[string]string{
