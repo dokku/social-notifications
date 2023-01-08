@@ -103,6 +103,10 @@ func getDevtoArticles(config *Config) ([]DevtoArticleResult, error) {
 }
 
 func sendSlackNotificationForDevtoArticle(result DevtoArticleResult, config *Config) error {
+	if !config.NotifySlack {
+		return nil
+	}
+
 	logFields := log.Fields{
 		"article_id": result.ID,
 		"title":      result.Title,
@@ -120,21 +124,19 @@ func sendSlackNotificationForDevtoArticle(result DevtoArticleResult, config *Con
 		Ts:         json.Number(strconv.FormatInt(int64(result.CreatedAt.Unix()), 10)),
 	}
 
-	if config.NotifySlack {
-		log.WithFields(logFields).Info("Notifying slack")
-		messageOpts := []slack.MsgOption{
-			slack.MsgOptionAsUser(false),
-			slack.MsgOptionAttachments(attachment),
-			slack.MsgOptionIconEmoji(":devto-rainbow:"),
-			slack.MsgOptionText("New story on <"+result.URL+"|Dev.to>", false),
-			slack.MsgOptionUsername("Dev.to Story Notifications"),
-			slack.MsgOptionDisableLinkUnfurl(),
-		}
+	log.WithFields(logFields).Info("Notifying slack")
+	messageOpts := []slack.MsgOption{
+		slack.MsgOptionAsUser(false),
+		slack.MsgOptionAttachments(attachment),
+		slack.MsgOptionIconEmoji(":devto-rainbow:"),
+		slack.MsgOptionText("New article on <"+result.URL+"|Dev.to>", false),
+		slack.MsgOptionUsername("Dev.to Article Notifications"),
+		slack.MsgOptionDisableLinkUnfurl(),
+	}
 
-		api := slack.New(config.SlackToken)
-		if _, _, err := api.PostMessage(config.SlackChannelID, messageOpts...); err != nil {
-			return err
-		}
+	api := slack.New(config.SlackToken)
+	if _, _, err := api.PostMessage(config.SlackChannelID, messageOpts...); err != nil {
+		return err
 	}
 
 	return nil

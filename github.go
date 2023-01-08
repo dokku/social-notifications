@@ -163,6 +163,10 @@ func getGithubRepositories(config *Config) ([]GithubRepositoryItem, error) {
 var githubIconUrl = "https://emoji.slack-edge.com/T085AJH3L/github/eeab46c8e8ba02f7.png"
 
 func sendSlackNotificationForGithubRepository(result GithubRepositoryItem, config *Config) error {
+	if !config.NotifySlack {
+		return nil
+	}
+
 	logFields := log.Fields{
 		"repository_id": result.ID,
 	}
@@ -189,21 +193,19 @@ func sendSlackNotificationForGithubRepository(result GithubRepositoryItem, confi
 		Fields:     fields,
 	}
 
-	if config.NotifySlack {
-		log.WithFields(logFields).Info("Notifying slack")
-		messageOpts := []slack.MsgOption{
-			slack.MsgOptionAsUser(false),
-			slack.MsgOptionAttachments(attachment),
-			slack.MsgOptionIconEmoji(":github:"),
-			slack.MsgOptionText("New repository on <"+result.HTMLURL+"|Github>", false),
-			slack.MsgOptionUsername("Github Repository Notifications"),
-			slack.MsgOptionDisableLinkUnfurl(),
-		}
+	log.WithFields(logFields).Info("Notifying slack")
+	messageOpts := []slack.MsgOption{
+		slack.MsgOptionAsUser(false),
+		slack.MsgOptionAttachments(attachment),
+		slack.MsgOptionIconEmoji(":github:"),
+		slack.MsgOptionText("New repository on <"+result.HTMLURL+"|Github>", false),
+		slack.MsgOptionUsername("Github Repository Notifications"),
+		slack.MsgOptionDisableLinkUnfurl(),
+	}
 
-		api := slack.New(config.SlackToken)
-		if _, _, err := api.PostMessage(config.SlackChannelID, messageOpts...); err != nil {
-			return err
-		}
+	api := slack.New(config.SlackToken)
+	if _, _, err := api.PostMessage(config.SlackChannelID, messageOpts...); err != nil {
+		return err
 	}
 
 	return nil

@@ -38,6 +38,10 @@ func getQuestions(config *Config) ([]stackoverflow.Question, error) {
 }
 
 func sendSlackNotificationForStackoverflow(question stackoverflow.Question, config *Config) error {
+	if !config.NotifySlack {
+		return nil
+	}
+
 	logFields := log.Fields{
 		"question_id": question.QuestionId,
 		"title":       question.Title,
@@ -83,22 +87,20 @@ func sendSlackNotificationForStackoverflow(question stackoverflow.Question, conf
 		},
 	}
 
-	if config.NotifySlack {
-		log.WithFields(logFields).Info("Notifying slack")
-		messageOpts := []slack.MsgOption{
-			slack.MsgOptionAsUser(false),
-			slack.MsgOptionAttachments(attachment),
-			slack.MsgOptionIconEmoji(":stackoverflow:"),
-			slack.MsgOptionText("New question on <"+question.Link+"|StackOverflow>", false),
-			slack.MsgOptionUsername("Stackoverflow Notification"),
-			slack.MsgOptionDisableLinkUnfurl(),
-		}
+	log.WithFields(logFields).Info("Notifying slack")
+	messageOpts := []slack.MsgOption{
+		slack.MsgOptionAsUser(false),
+		slack.MsgOptionAttachments(attachment),
+		slack.MsgOptionIconEmoji(":stackoverflow:"),
+		slack.MsgOptionText("New question on <"+question.Link+"|StackOverflow>", false),
+		slack.MsgOptionUsername("Stackoverflow Notification"),
+		slack.MsgOptionDisableLinkUnfurl(),
+	}
 
-		api := slack.New(config.SlackToken)
-		if _, _, err := api.PostMessage(config.SlackChannelID, messageOpts...); err != nil {
-			println(err.Error())
-			return err
-		}
+	api := slack.New(config.SlackToken)
+	if _, _, err := api.PostMessage(config.SlackChannelID, messageOpts...); err != nil {
+		println(err.Error())
+		return err
 	}
 
 	return nil

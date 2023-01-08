@@ -63,6 +63,10 @@ func getHackernewsStories(config *Config) ([]HackerNewsResult, error) {
 }
 
 func sendSlackNotificationForHackernewsStory(result HackerNewsResult, config *Config) error {
+	if !config.NotifySlack {
+		return nil
+	}
+
 	logFields := log.Fields{
 		"story_id": result.ObjectID,
 		"title":    result.Title,
@@ -108,21 +112,19 @@ func sendSlackNotificationForHackernewsStory(result HackerNewsResult, config *Co
 		Fields:     fields,
 	}
 
-	if config.NotifySlack {
-		log.WithFields(logFields).Info("Notifying slack")
-		messageOpts := []slack.MsgOption{
-			slack.MsgOptionAsUser(false),
-			slack.MsgOptionAttachments(attachment),
-			slack.MsgOptionIconEmoji(":hacker-news:"),
-			slack.MsgOptionText("New story on <"+link+"|Hacker News>", false),
-			slack.MsgOptionUsername("Hacker News Story Notifications"),
-			slack.MsgOptionDisableLinkUnfurl(),
-		}
+	log.WithFields(logFields).Info("Notifying slack")
+	messageOpts := []slack.MsgOption{
+		slack.MsgOptionAsUser(false),
+		slack.MsgOptionAttachments(attachment),
+		slack.MsgOptionIconEmoji(":hacker-news:"),
+		slack.MsgOptionText("New story on <"+link+"|Hacker News>", false),
+		slack.MsgOptionUsername("Hacker News Story Notifications"),
+		slack.MsgOptionDisableLinkUnfurl(),
+	}
 
-		api := slack.New(config.SlackToken)
-		if _, _, err := api.PostMessage(config.SlackChannelID, messageOpts...); err != nil {
-			return err
-		}
+	api := slack.New(config.SlackToken)
+	if _, _, err := api.PostMessage(config.SlackChannelID, messageOpts...); err != nil {
+		return err
 	}
 
 	return nil
