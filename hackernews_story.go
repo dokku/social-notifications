@@ -45,12 +45,12 @@ func getHackernewsStories(config *Config) ([]HackerNewsResult, error) {
 
 		for _, story := range results.Hits {
 			if len(story.HighlightResult.URL.MatchedWords) > 0 {
-				if !strings.Contains(story.HighlightResult.URL.Value, config.Tag) {
+				if !strings.Contains(strings.ToLower(story.HighlightResult.URL.Value), config.Tag) {
 					continue
 				}
 			}
 			if len(story.HighlightResult.Author.MatchedWords) > 0 {
-				if !strings.Contains(story.HighlightResult.Author.Value, config.Tag) {
+				if !strings.Contains(strings.ToLower(story.HighlightResult.Author.Value), config.Tag) {
 					continue
 				}
 			}

@@ -44,22 +44,22 @@ func getHackernewsComments(config *Config) ([]HackerNewsResult, error) {
 
 		for _, comment := range results.Hits {
 			if len(comment.HighlightResult.Author.MatchedWords) > 0 {
-				if !strings.Contains(comment.HighlightResult.Author.Value, config.Tag) {
+				if !strings.Contains(strings.ToLower(comment.HighlightResult.Author.Value), config.Tag) {
 					continue
 				}
 			}
 			if len(comment.HighlightResult.CommentText.MatchedWords) > 0 {
-				if !strings.Contains(comment.HighlightResult.CommentText.Value, config.Tag) {
+				if !strings.Contains(strings.ToLower(comment.HighlightResult.CommentText.Value), config.Tag) {
 					continue
 				}
 			}
 			if len(comment.HighlightResult.StoryTitle.MatchedWords) > 0 {
-				if !strings.Contains(comment.HighlightResult.StoryTitle.Value, config.Tag) {
+				if !strings.Contains(strings.ToLower(comment.HighlightResult.StoryTitle.Value), config.Tag) {
 					continue
 				}
 			}
 			if len(comment.HighlightResult.StoryURL.MatchedWords) > 0 {
-				if !strings.Contains(comment.HighlightResult.StoryURL.Value, config.Tag) {
+				if !strings.Contains(strings.ToLower(comment.HighlightResult.StoryURL.Value), config.Tag) {
 					continue
 				}
 			}
