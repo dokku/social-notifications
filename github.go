@@ -169,11 +169,6 @@ func sendSlackNotificationForGithubRepository(result GithubRepositoryItem, confi
 
 	fields := []slack.AttachmentField{
 		{
-			Title: "Name",
-			Value: result.FullName,
-			Short: true,
-		},
-		{
 			Title: "Stargazers",
 			Value: strconv.FormatInt(int64(result.StargazersCount), 10),
 			Short: true,
@@ -191,6 +186,7 @@ func sendSlackNotificationForGithubRepository(result GithubRepositoryItem, confi
 		AuthorName: result.Owner.Login,
 		AuthorIcon: result.Owner.AvatarURL,
 		AuthorLink: result.Owner.HTMLURL,
+		Title:      result.FullName,
 		TitleLink:  result.HTMLURL,
 		Footer:     "Github Repository Notification",
 		FooterIcon: githubIconUrl,
@@ -269,7 +265,7 @@ func processGithubRepositories(config *Config, db *gorm.DB) error {
 		"processed_repository_count": len(results),
 		"inserted_repository_count":  inserted,
 		"notified_repository_count":  notified,
-	}).Info("Done with hacker news repositorys")
+	}).Info("Done with github repositories")
 
 	return nil
 }
