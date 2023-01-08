@@ -6,7 +6,7 @@
         },
         {
             "command": "social-notifications --services hackernews_comment",
-            "schedule": "20 */2 * * *"
+            "schedule": "5 */2 * * *"
         },
         {
             "command": "social-notifications --services hackernews_story",
