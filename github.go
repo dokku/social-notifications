@@ -169,11 +169,6 @@ func sendSlackNotificationForGithubRepository(result GithubRepositoryItem, confi
 
 	fields := []slack.AttachmentField{
 		{
-			Title: "Stargazers",
-			Value: strconv.FormatInt(int64(result.StargazersCount), 10),
-			Short: true,
-		},
-		{
 			Title: "Language",
 			Value: result.Language,
 			Short: true,
