@@ -104,7 +104,7 @@ func sendSlackNotificationForHackernewsComment(result HackerNewsResult, config *
 		AuthorLink: fmt.Sprintf("https://news.ycombinator.com/user?id=%s", result.Author),
 		TitleLink:  link,
 		Footer:     "Hacker News Comment Notification",
-		FooterIcon: hackernewsIconUrl,
+		FooterIcon: hackernewsIconURL,
 		Ts:         json.Number(strconv.FormatInt(int64(result.CreatedAt.Unix()), 10)),
 		Fields:     fields,
 	}

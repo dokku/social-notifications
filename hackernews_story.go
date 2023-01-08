@@ -107,7 +107,7 @@ func sendSlackNotificationForHackernewsStory(result HackerNewsResult, config *Co
 		Title:      result.Title,
 		TitleLink:  link,
 		Footer:     "Hacker News Story Notification",
-		FooterIcon: hackernewsIconUrl,
+		FooterIcon: hackernewsIconURL,
 		Ts:         json.Number(strconv.FormatInt(int64(result.CreatedAt.Unix()), 10)),
 		Fields:     fields,
 	}

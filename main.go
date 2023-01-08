@@ -78,6 +78,7 @@ func main() {
 		"hackernews_comment": processHackernewsComments,
 		"hackernews_story":   processHackernewsStories,
 		"medium":             processMediumArticles,
+		"reddit":             processRedditPosts,
 		"stackoverflow":      processStackoverflow,
 		"twitter":            processTwitter,
 	}

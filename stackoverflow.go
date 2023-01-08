@@ -15,12 +15,12 @@ import (
 	"gorm.io/gorm"
 )
 
+var stackoverflowIconURL = "https://emoji.slack-edge.com/T085AJH3L/stackoverflow/35cab7f857fa4681.png"
+
 type Question struct {
 	ID    int32  `gorm:"AUTO_INCREMENT" form:"id" json:"id"`
 	Title string `gorm:"not null" form:"title" json:"title"`
 }
-
-var stackoverflowIconURL = "https://emoji.slack-edge.com/T085AJH3L/stackoverflow/35cab7f857fa4681.png"
 
 func getQuestions(config *Config) ([]stackoverflow.Question, error) {
 	questions, err := util.GetQuestionsAll(nil, config.Site, &stackoverflow.GetQuestionsOpts{

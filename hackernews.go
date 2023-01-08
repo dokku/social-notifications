@@ -4,6 +4,8 @@ import (
 	"time"
 )
 
+var hackernewsIconURL = "https://emoji.slack-edge.com/T085AJH3L/hacker-news/0daae30bfa8eefc6.png"
+
 type HackerNewsResponse struct {
 	Hits             []HackerNewsResult `json:"hits"`
 	NbHits           int                `json:"nbHits"`
@@ -90,5 +92,3 @@ type HackerNewsResult struct {
 		} `json:"url"`
 	} `json:"_highlightResult"`
 }
-
-var hackernewsIconUrl = "https://emoji.slack-edge.com/T085AJH3L/hacker-news/0daae30bfa8eefc6.png"

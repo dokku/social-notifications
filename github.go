@@ -13,6 +13,8 @@ import (
 	"gorm.io/gorm"
 )
 
+var githubIconURL = "https://emoji.slack-edge.com/T085AJH3L/github/eeab46c8e8ba02f7.png"
+
 type GithubRepository struct {
 	ID           int32  `gorm:"AUTO_INCREMENT" form:"id" json:"id"`
 	RepositoryID int64  `gorm:"not null" form:"repository_id" json:"repository_id"`
@@ -160,8 +162,6 @@ func getGithubRepositories(config *Config) ([]GithubRepositoryItem, error) {
 	return results, nil
 }
 
-var githubIconUrl = "https://emoji.slack-edge.com/T085AJH3L/github/eeab46c8e8ba02f7.png"
-
 func sendSlackNotificationForGithubRepository(result GithubRepositoryItem, config *Config) error {
 	if !config.NotifySlack {
 		return nil
@@ -188,7 +188,7 @@ func sendSlackNotificationForGithubRepository(result GithubRepositoryItem, confi
 		Title:      result.FullName,
 		TitleLink:  result.HTMLURL,
 		Footer:     "Github Repository Notification",
-		FooterIcon: githubIconUrl,
+		FooterIcon: githubIconURL,
 		Ts:         json.Number(strconv.FormatInt(int64(result.CreatedAt.Unix()), 10)),
 		Fields:     fields,
 	}

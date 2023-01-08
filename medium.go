@@ -13,6 +13,8 @@ import (
 	"gorm.io/gorm"
 )
 
+var mediumIconURL = "https://emoji.slack-edge.com/T085AJH3L/medium/ea7124868c6b2c68.png"
+
 type MediumArticle struct {
 	ID        int32  `gorm:"AUTO_INCREMENT" form:"id" json:"id"`
 	ArticleID string `gorm:"not null" form:"article_id" json:"article_id"`
@@ -60,8 +62,6 @@ type MediumResult struct {
 	Author         string   `json:"author"`
 	Subtitle       string   `json:"subtitle"`
 }
-
-var mediumIconUrl = "https://emoji.slack-edge.com/T085AJH3L/medium/ea7124868c6b2c68.png"
 
 func getMediumArticles(config *Config) ([]string, error) {
 	var results []string
@@ -146,7 +146,7 @@ func sendSlackNotificationForMediumArticle(result MediumResult, config *Config) 
 		Title:      result.Title,
 		TitleLink:  result.URL,
 		Footer:     "Medium Article Notification",
-		FooterIcon: mediumIconUrl,
+		FooterIcon: mediumIconURL,
 		Ts:         json.Number(strconv.FormatInt(int64(t.Unix()), 10)),
 	}
 

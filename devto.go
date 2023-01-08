@@ -13,6 +13,8 @@ import (
 	"gorm.io/gorm"
 )
 
+var devtoIconURL = "https://emoji.slack-edge.com/T085AJH3L/devto-rainbow/387781e03f7a17fe.png"
+
 type DevtoArticle struct {
 	ID        int32  `gorm:"AUTO_INCREMENT" form:"id" json:"id"`
 	ArticleID int64  `gorm:"not null" form:"article_id" json:"article_id"`
@@ -70,8 +72,6 @@ type DevtoArticleResult struct {
 	} `json:"flare_tag"`
 }
 
-var devtoIconUrl = "https://emoji.slack-edge.com/T085AJH3L/devto-rainbow/387781e03f7a17fe.png"
-
 func getDevtoArticles(config *Config) ([]DevtoArticleResult, error) {
 	var results []DevtoArticleResult
 	page := 1
@@ -120,7 +120,7 @@ func sendSlackNotificationForDevtoArticle(result DevtoArticleResult, config *Con
 		Title:      result.Title,
 		TitleLink:  result.URL,
 		Footer:     "Dev.to Article Notification",
-		FooterIcon: devtoIconUrl,
+		FooterIcon: devtoIconURL,
 		Ts:         json.Number(strconv.FormatInt(int64(result.CreatedAt.Unix()), 10)),
 	}
 
