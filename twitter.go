@@ -83,6 +83,7 @@ func getTweets(config *Config) ([]*twitter.TweetDictionary, error) {
 		"chatta",
 		"comte",
 		"conde",
+		"disney",
 		"dokkan",
 		"hera",
 		"luke",
