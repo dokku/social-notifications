@@ -80,13 +80,17 @@ func getTweets(config *Config) ([]*twitter.TweetDictionary, error) {
 
 	// ignore anything with these words too
 	ignoreWords := []string{
+		"caliphate",
 		"chatta",
 		"comte",
 		"conde",
 		"disney",
 		"dokkan",
 		"hera",
+		"imarat",
+		"isis",
 		"luke",
+		"kadyrov",
 		"movie",
 		"shiseru",
 		"sushi",
