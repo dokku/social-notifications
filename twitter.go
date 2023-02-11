@@ -183,7 +183,7 @@ func sendSlackNotificationForTwitterTweet(result *twitter.TweetDictionary, confi
 	}
 
 	logFields := log.Fields{
-		"article_id": result.Tweet.ID,
+		"tweet_id": result.Tweet.ID,
 	}
 
 	t, err := time.Parse(time.RFC3339, result.Tweet.CreatedAt)
