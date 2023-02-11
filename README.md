@@ -54,6 +54,12 @@ Shows articles where the content has the tag.
 
 ![medium preview](/images/medium.png)
 
+## Mastodon
+
+Shows results from mastodon.social where the mastodon content has the tag.
+
+![mastodon preview](/images/mastodon.png)
+
 ## Stackoverflow
 
 Shows questions where the question has the tag.

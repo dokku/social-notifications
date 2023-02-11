@@ -77,6 +77,7 @@ func main() {
 		"github":             processGithubRepositories,
 		"hackernews_comment": processHackernewsComments,
 		"hackernews_story":   processHackernewsStories,
+		"mastodon":           processMastodon,
 		"medium":             processMediumArticles,
 		"stackoverflow":      processStackoverflow,
 		"twitter":            processTwitter,

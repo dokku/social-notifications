@@ -17,6 +17,9 @@ require (
 )
 
 require (
+	github.com/JohannesKaufmann/html-to-markdown v1.3.6 // indirect
+	github.com/PuerkitoBio/goquery v1.8.0 // indirect
+	github.com/andybalholm/cascadia v1.3.1 // indirect
 	github.com/buger/jsonparser v1.1.1 // indirect
 	github.com/golang/protobuf v1.5.2 // indirect
 	github.com/gorilla/websocket v1.4.2 // indirect
