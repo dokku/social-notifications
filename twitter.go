@@ -81,6 +81,7 @@ func getTweets(config *Config) ([]*twitter.TweetDictionary, error) {
 	// ignore anything with these words too
 	ignoreWords := []string{
 		"caliphate",
+		"chennai",
 		"chatta",
 		"chettha",
 		"comte",
@@ -98,6 +99,7 @@ func getTweets(config *Config) ([]*twitter.TweetDictionary, error) {
 		"tamil",
 		"theatre",
 		"theater",
+		"umarov",
 	}
 
 	// ignore these authors completely
