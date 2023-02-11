@@ -27,6 +27,10 @@
         {
             "command": "social-notifications --services twitter",
             "schedule": "30 17 * * *"
+        },
+        {
+            "command": "social-notifications --services mastodon",
+            "schedule": "35 17 * * *"
         }
     ],
     "scripts": {
