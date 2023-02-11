@@ -22,7 +22,7 @@ A simple project that listens to specific words across the web and sends notific
 social-notifications
 
 # run for a single service
-social-notifications --service github
+social-notifications --services github
 
 # disable notifications (useful when building the database for the first time)
 social-notifications --notify-slack=false
