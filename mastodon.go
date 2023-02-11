@@ -157,10 +157,6 @@ func processMastodon(config *Config, db *gorm.DB) error {
 			"toot_id": result.ID,
 		}
 
-		if result.ID != "109805417225994574" {
-			continue
-		}
-
 		var entity MastodonToot
 		if dbResult := db.First(&entity, "toot_id = ?", result.ID); !errors.Is(dbResult.Error, gorm.ErrRecordNotFound) {
 			continue
