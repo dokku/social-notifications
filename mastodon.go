@@ -167,14 +167,14 @@ func processMastodon(config *Config, db *gorm.DB) error {
 		}
 
 		log.WithFields(logFields).Info("Inserting new toot")
-		// entity = MastodonToot{
-		// 	TootID: result.ID,
-		// }
+		entity = MastodonToot{
+			TootID: result.ID,
+		}
 
-		// if dbResult := db.Create(&entity); dbResult.Error != nil {
-		// 	log.WithError(dbResult.Error).WithFields(logFields).Fatal("error inserting toot into database")
-		// 	continue
-		// }
+		if dbResult := db.Create(&entity); dbResult.Error != nil {
+			log.WithError(dbResult.Error).WithFields(logFields).Fatal("error inserting toot into database")
+			continue
+		}
 
 		inserted += 1
 		if err := sendSlackNotificationForMastodonToot(result, config); err != nil {
