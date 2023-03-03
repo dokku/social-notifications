@@ -4,6 +4,7 @@ module social-notifications
 go 1.19
 
 require (
+	github.com/JohannesKaufmann/html-to-markdown v1.3.6
 	github.com/antihax/optional v1.0.0
 	github.com/g8rswimmer/go-twitter v1.1.4
 	github.com/go-resty/resty/v2 v2.7.0
@@ -13,11 +14,10 @@ require (
 	github.com/slack-go/slack v0.12.1
 	github.com/spf13/pflag v1.0.5
 	gorm.io/driver/sqlite v1.4.4
-	gorm.io/gorm v1.24.5
+	gorm.io/gorm v1.24.6
 )
 
 require (
-	github.com/JohannesKaufmann/html-to-markdown v1.3.6 // indirect
 	github.com/PuerkitoBio/goquery v1.8.0 // indirect
 	github.com/andybalholm/cascadia v1.3.1 // indirect
 	github.com/buger/jsonparser v1.1.1 // indirect
