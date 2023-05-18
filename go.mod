@@ -10,7 +10,7 @@ require (
 	github.com/go-resty/resty/v2 v2.7.0
 	github.com/grokify/go-stackoverflow v0.1.5
 	github.com/kelseyhightower/envconfig v1.4.0
-	github.com/sirupsen/logrus v1.9.0
+	github.com/sirupsen/logrus v1.9.2
 	github.com/slack-go/slack v0.12.2
 	github.com/spf13/pflag v1.0.5
 	gorm.io/driver/sqlite v1.5.0
