@@ -7,7 +7,7 @@ require (
 	github.com/JohannesKaufmann/html-to-markdown v1.4.2
 	github.com/antihax/optional v1.0.0
 	github.com/g8rswimmer/go-twitter v1.1.4
-	github.com/go-resty/resty/v2 v2.10.0
+	github.com/go-resty/resty/v2 v2.11.0
 	github.com/grokify/go-stackoverflow v0.1.8
 	github.com/kelseyhightower/envconfig v1.4.0
 	github.com/sirupsen/logrus v1.9.3
