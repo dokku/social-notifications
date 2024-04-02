@@ -1,7 +1,9 @@
-// +heroku goVersion 1.19
+// +heroku goVersion 1.22
 module social-notifications
 
-go 1.19
+go 1.22
+
+toolchain go1.22.1
 
 require (
 	github.com/JohannesKaufmann/html-to-markdown v1.5.0
