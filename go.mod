@@ -1,4 +1,4 @@
-// +heroku goVersion 1.19
+// +heroku goVersion 1.22
 module social-notifications
 
 go 1.22
