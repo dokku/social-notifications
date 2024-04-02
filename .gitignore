@@ -3,3 +3,4 @@
 .env.production
 *.db
 social-notifications
+bin/litestream
