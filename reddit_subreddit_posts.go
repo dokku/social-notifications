@@ -58,7 +58,7 @@ func sendSlackNotificationForRedditPost(result RedditPostResult, config *Config)
 		Color:      "#36a64f",
 		Fallback:   "New post on Reddit!",
 		AuthorName: result.Data.Author,
-		AuthorLink: fmt.Sprintf("https://www.reddit.com/user/mike3dr%s", result.Data.Author),
+		AuthorLink: fmt.Sprintf("https://www.reddit.com/user/%s", result.Data.Author),
 		Title:      result.Data.Title,
 		TitleLink:  result.Data.URL,
 		Text:       result.Data.Selftext,
