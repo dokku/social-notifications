@@ -60,6 +60,12 @@ Shows results from mastodon.social where the mastodon content has the tag.
 
 ![mastodon preview](/images/mastodon.png)
 
+## Reddit
+
+Shows results where the post is in a particular subreddit.
+
+![reddit preview](/images/reddit.png)
+
 ## Stackoverflow
 
 Shows questions where the question has the tag.
