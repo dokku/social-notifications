@@ -2,35 +2,39 @@
     "cron": [
         {
             "command": "social-notifications --services stackoverflow",
-            "schedule": "0 17 * * *"
+            "schedule": "2 17 * * *"
         },
         {
             "command": "social-notifications --services hackernews_comment",
-            "schedule": "5 */2 * * *"
+            "schedule": "7 */2 * * *"
         },
         {
             "command": "social-notifications --services hackernews_story",
-            "schedule": "10 */4 * * *"
+            "schedule": "12 */4 * * *"
         },
         {
             "command": "social-notifications --services github",
-            "schedule": "15 17 * * *"
+            "schedule": "17 17 * * *"
         },
         {
             "command": "social-notifications --services devto",
-            "schedule": "20 17 * * *"
+            "schedule": "22 17 * * *"
         },
         {
             "command": "social-notifications --services medium",
-            "schedule": "25 17 * * 1"
+            "schedule": "27 17 * * 1"
+        },
+        {
+            "command": "social-notifications --services reddit",
+            "schedule": "2 17 * * *"
         },
         {
             "command": "social-notifications --services twitter",
-            "schedule": "30 17 * * *"
+            "schedule": "7 17 * * *"
         },
         {
             "command": "social-notifications --services mastodon",
-            "schedule": "35 17 * * *"
+            "schedule": "12 17 * * *"
         }
     ],
     "scripts": {
