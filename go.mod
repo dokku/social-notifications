@@ -6,7 +6,7 @@ go 1.22
 toolchain go1.22.1
 
 require (
-	github.com/JohannesKaufmann/html-to-markdown v1.5.0
+	github.com/JohannesKaufmann/html-to-markdown v1.6.0
 	github.com/antihax/optional v1.0.0
 	github.com/g8rswimmer/go-twitter v1.1.4
 	github.com/go-resty/resty/v2 v2.13.1
@@ -20,8 +20,8 @@ require (
 )
 
 require (
-	github.com/PuerkitoBio/goquery v1.8.1 // indirect
-	github.com/andybalholm/cascadia v1.3.1 // indirect
+	github.com/PuerkitoBio/goquery v1.9.2 // indirect
+	github.com/andybalholm/cascadia v1.3.2 // indirect
 	github.com/golang/protobuf v1.5.4 // indirect
 	github.com/gorilla/websocket v1.4.2 // indirect
 	github.com/grokify/base36 v1.0.5 // indirect
