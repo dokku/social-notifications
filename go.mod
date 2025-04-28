@@ -2,7 +2,7 @@
 module social-notifications
 
 go 1.22
-toolchain go1.22.5
+toolchain go1.24.1
 
 require (
 	github.com/JohannesKaufmann/html-to-markdown v1.6.0
@@ -15,7 +15,7 @@ require (
 	github.com/slack-go/slack v0.16.0
 	github.com/spf13/pflag v1.0.6
 	gorm.io/driver/sqlite v1.5.7
-	gorm.io/gorm v1.25.12
+	gorm.io/gorm v1.26.0
 )
 
 require (
