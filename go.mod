@@ -1,7 +1,8 @@
 // +heroku goVersion 1.22
 module social-notifications
 
-go 1.22
+go 1.22.0
+
 toolchain go1.24.1
 
 require (
@@ -15,7 +16,7 @@ require (
 	github.com/slack-go/slack v0.16.0
 	github.com/spf13/pflag v1.0.6
 	gorm.io/driver/sqlite v1.5.7
-	gorm.io/gorm v1.26.1
+	gorm.io/gorm v1.30.0
 )
 
 require (
