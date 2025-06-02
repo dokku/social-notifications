@@ -13,7 +13,7 @@ require (
 	github.com/grokify/go-stackoverflow v0.1.10
 	github.com/kelseyhightower/envconfig v1.4.0
 	github.com/sirupsen/logrus v1.9.3
-	github.com/slack-go/slack v0.16.0
+	github.com/slack-go/slack v0.17.0
 	github.com/spf13/pflag v1.0.6
 	gorm.io/driver/sqlite v1.5.7
 	gorm.io/gorm v1.30.0
@@ -22,7 +22,7 @@ require (
 require (
 	github.com/PuerkitoBio/goquery v1.9.2 // indirect
 	github.com/andybalholm/cascadia v1.3.2 // indirect
-	github.com/gorilla/websocket v1.4.2 // indirect
+	github.com/gorilla/websocket v1.5.3 // indirect
 	github.com/grokify/base36 v1.0.5 // indirect
 	github.com/grokify/gocharts/v2 v2.20.1 // indirect
 	github.com/grokify/mogo v0.64.11 // indirect
