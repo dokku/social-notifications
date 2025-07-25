@@ -16,7 +16,7 @@ require (
 	github.com/slack-go/slack v0.17.2
 	github.com/spf13/pflag v1.0.6
 	gorm.io/driver/sqlite v1.6.0
-	gorm.io/gorm v1.30.0
+	gorm.io/gorm v1.30.1
 )
 
 require (
