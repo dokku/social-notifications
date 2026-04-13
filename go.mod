@@ -11,7 +11,7 @@ require (
 	github.com/grokify/go-stackoverflow v0.1.10
 	github.com/kelseyhightower/envconfig v1.4.0
 	github.com/sirupsen/logrus v1.9.4
-	github.com/slack-go/slack v0.21.1
+	github.com/slack-go/slack v0.22.0
 	github.com/spf13/pflag v1.0.10
 	gorm.io/driver/sqlite v1.6.0
 	gorm.io/gorm v1.31.1
