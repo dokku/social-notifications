@@ -1,7 +1,7 @@
 // +heroku goVersion 1.22
 module social-notifications
 
-go 1.25
+go 1.26
 
 require (
 	github.com/JohannesKaufmann/html-to-markdown v1.6.0
@@ -11,7 +11,7 @@ require (
 	github.com/grokify/go-stackoverflow v0.1.10
 	github.com/kelseyhightower/envconfig v1.4.0
 	github.com/sirupsen/logrus v1.10.2
-	github.com/slack-go/slack v0.29.0
+	github.com/slack-go/slack v0.30.1
 	github.com/spf13/pflag v1.0.10
 	gorm.io/driver/sqlite v1.6.0
 	gorm.io/gorm v1.31.2
